@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Public/python_basic_diploma/.idea/python_basic_diploma.iml" filepath="$PROJECT_DIR$/../../Public/python_basic_diploma/.idea/python_basic_diploma.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/telegram_bot.iml" filepath="$PROJECT_DIR$/.idea/telegram_bot.iml" />
+    </modules>
+  </component>
+</project>
