@@ -19,8 +19,8 @@ url: str = "https://" + site.host_api
 params: Dict = {"fragment": "true", "json": "true"}
 
 
-def _make_get_response(url: str, params: Dict, method: str = "GET", headers=headers,
-                       success=200) -> requests.Response | int:  # basic response function for 'get' method
+def _make_get_response(url: str, params: Dict, method: str = "GET", headers: object = headers,
+                       success: object = 200) -> requests.Response | int:  # basic response function for 'get' method
     if headers is None:
         headers = headers
     if params is None:

@@ -3,6 +3,8 @@ aiogram-calendar
 python-dotenv==1.0.0
 peewee==3.16.0
 requests==2.28.2
-pydantic==1.10.5
-urllib3==1.26.14
+pydantic==1.10.6
+urllib3==1.26.15
 asyncio==3.4.3
+aiohttp==3.8.4
+loguru==0.6.0

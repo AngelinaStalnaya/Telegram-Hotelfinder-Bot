@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 
 from aiogram import types
@@ -6,8 +7,8 @@ from aiogram.types import CallbackQuery, ReplyKeyboardRemove, ForceReply
 from aiogram.utils.callback_data import CallbackData
 from aiogram_calendar import SimpleCalendar, simple_cal_callback
 
-from database.core import PriceSort, BestPrice, Photo, AnswerMaker,\
-                                            RecordHistory, Hotels, crud
+from database.core import PriceSort, BestPrice, Photo, AnswerMaker, \
+                                               RecordHistory, Hotels, crud
 from site_api.site_api_core import site_api
 from tgbot_api.States import *
 from tgbot_api.keyboards.keyboards import *
@@ -31,7 +32,8 @@ async def create_history(state: FSMContext) -> None:
 
 
 async def find_location(message: types.Message, state: FSMContext) -> None:
-    response = site_api.get_location(message.text)
+    response = await site_api.get_location(message.text)
+    await asyncio.sleep(0.1)
     if response:
         async with state.proxy() as data:
             data['location'] = response
@@ -73,7 +75,7 @@ async def check_out_calendar(callback_query: CallbackQuery, callback_data: Callb
                 crud.create(model=PriceSort, data=load)
                 uploaded_data = crud.retrieve_all(model=PriceSort)[0]
                 data['id_line'] = uploaded_data.id
-                result = site_api.get_all_price(location=uploaded_data.location_gaia,
+                result = await site_api.get_all_price(location=uploaded_data.location_gaia,
                                                                    sort=uploaded_data.sort,
                                                                    check_in=uploaded_data.check_in,
                                                                    check_out=uploaded_data.check_out)
@@ -126,7 +128,8 @@ async def distance_limit(message: types.Message, state: FSMContext) -> None:
             crud.create(model=BestPrice, data=load)
             uploaded_data = crud.retrieve_all(model=BestPrice)[0]
             data['id_line'] = uploaded_data.id
-            result = site_api.get_bestdeal(location_gaia=uploaded_data.location_gaia,
+            try:
+                result = await site_api.get_bestdeal(location_gaia=uploaded_data.location_gaia,
                                                                location_lat=uploaded_data.location_lat,
                                                                location_long=uploaded_data.location_long,
                                                                check_in=uploaded_data.check_in,
@@ -134,16 +137,17 @@ async def distance_limit(message: types.Message, state: FSMContext) -> None:
                                                                cost_max=uploaded_data.cost_max,
                                                                cost_min=uploaded_data.cost_min,
                                                                distance_max=uploaded_data.distance_max)
-            if result:
-                data['site_results'] = result
-                await message.answer(f'We`ve found {len(result)} hotels. '
-                                                        f'Please, limit the result size.',
-                                                        reply_markup=ForceReply())
-                await PriceStatesGroup.result_size.set()
-            else:
+                if result:
+                    data['site_results'] = result
+                    await message.answer(f'We`ve found {len(result)} hotels. '
+                                         f'Please, limit the result size.',
+                                         reply_markup=ForceReply())
+                    await PriceStatesGroup.result_size.set()
+            except Exception as exc:
+                print(f'{exc}')
                 await message.answer_sticker(sticker='CAACAgIAAxkBAAEH9FVj_21SrQVXrPqhaw0btrJ-VCzuCwACvwUAAj-VzAr5wuwdpEkoEy4E')
                 await message.answer('We are sorry for not finding hotels for your request. \n'
-                                                        'Please, start again.')
+                                     'Please, start again.', reply_markup=get_kb_start())
                 await state.finish()
     else:
         await message.reply('It`s not a number. Please, try again.')
@@ -185,8 +189,8 @@ async def check_hotel_in_db(hotel, message: types.Message) -> None:
     if check:
         await send_hotels(message=message, data=check[0], hotel_data=hotel)
     else:
-        all_amount_photo, address = site_api.get_photos_and_address(property_id=hotel.hotel_id)
-        hotel_url = site_api.get_property_url(region_id=hotel.location,
+        all_amount_photo, address = await site_api.get_photos_and_address(property_id=hotel.hotel_id)
+        hotel_url = await site_api.get_property_url(region_id=hotel.location,
                                                                         property_id=hotel.hotel_id)
         load = [hotel.hotel_id, hotel.hotel_name, address, hotel.distance,
                    hotel_url, all_amount_photo]
@@ -264,7 +268,6 @@ async def photo_limit(message: types.Message, state: FSMContext):
                 except Exception as exc:
                     await message.answer('Something`s wrong')
                     print(f'{exc}')
-                # crud.update(model=AnswerMaker, hotel_id=data['hotel_id'])
         crud.update(model=AnswerMaker, hotel_id=data['hotel_id'], success=1)
         await take_next_hotel(user_id=message.from_user.id, message=message, state=state)
     else:

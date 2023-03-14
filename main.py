@@ -1,4 +1,4 @@
-import logging
+from loguru import logger
 
 from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -8,7 +8,10 @@ from tgbot_api.handlers.handlers_core import register_all_handlers
 
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
+logger.debug('Dev option')
+logger.add('logging_file.log')
+
 
 
 # Initialize bot, dispatcher, memory storage
@@ -19,7 +22,7 @@ bot = Bot(token=API_TOKEN, parse_mode='HTML')
 dp = Dispatcher(bot=bot, storage=storage)
 
 
-async def on_startup(_):
+async def on_startup(_) -> None:
     print("I've been started up!")
     register_all_handlers(dp)
 

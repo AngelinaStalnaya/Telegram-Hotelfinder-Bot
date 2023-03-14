@@ -52,7 +52,6 @@ async def history_command(message: types.Message):
                                                     f'Command: <b>{history[i_request].operation}</b> \n'
                                                     f'Location:  <b><i>{history[i_request].location}</i></b>\n'
                                                     f'Hotels received: \n  *{hotels_message}.')
-        # crud.delete_old(model=RecordHistory, user_id=message.from_user.id)
     else:
         await message.answer_sticker(sticker='CAACAgIAAxkBAAEH9G9j_3Er3x3MTcUd2h4JXf1RC39sYwAC3gUAAj-VzApvED_5xd0MFy4E')
         await message.answer('Your history`s empty yet.')
