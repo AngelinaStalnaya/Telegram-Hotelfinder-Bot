@@ -7,12 +7,10 @@ from settings import start_bot
 from tgbot_api.handlers.handlers_core import register_all_handlers
 
 
-# Configure logging
-# logging.basicConfig(level=logging.INFO)
-logger.debug('Dev option')
-logger.add('logging_file.log')
-
-
+# Configure logger
+logger.remove(0)
+logger.add('logging_file.log', format='{time: DD.MM.YYYY at HH: mm: ss} -  {level} - {message}',
+                     level='DEBUG', rotation='5 MB', compression='zip')
 
 # Initialize bot, dispatcher, memory storage
 
@@ -23,10 +21,19 @@ dp = Dispatcher(bot=bot, storage=storage)
 
 
 async def on_startup(_) -> None:
-    print("I've been started up!")
+    logger.info('The bot has been started up!')
     register_all_handlers(dp)
 
 
-if __name__ == '__main__':
+async def on_shutdown(_) -> None:
+    logger.info('The bot has been stopped.')
+
+
+@logger.catch
+def main():
     executor.start_polling(dispatcher=dp, on_startup=on_startup,
-                                          skip_updates=True)
+                           skip_updates=True, on_shutdown=on_shutdown)
+
+
+if __name__ == '__main__':
+     main()

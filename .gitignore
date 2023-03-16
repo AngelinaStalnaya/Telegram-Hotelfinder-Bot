@@ -1,5 +1,8 @@
 # created by virtualenv automatically
 .env
 .idea/*
-venv
+venv/
 .log
+.db
+__pycache__/
+

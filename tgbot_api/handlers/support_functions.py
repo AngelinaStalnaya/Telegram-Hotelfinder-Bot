@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime
 
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, ReplyKeyboardRemove, ForceReply
@@ -41,7 +42,7 @@ async def find_location(message: types.Message, state: FSMContext) -> None:
                                                 reply_markup=await SimpleCalendar().start_calendar())
         await PriceStatesGroup.check_in.set()
     else:
-        await message.answer('Sorry, something went wrong. \n'
+        await message.answer('Sorry, the bot can`t find the location. \n'
                                                 'Please, try again.')
 
 
@@ -143,8 +144,7 @@ async def distance_limit(message: types.Message, state: FSMContext) -> None:
                                          f'Please, limit the result size.',
                                          reply_markup=ForceReply())
                     await PriceStatesGroup.result_size.set()
-            except Exception as exc:
-                print(f'{exc}')
+            except Exception:
                 await message.answer_sticker(sticker='CAACAgIAAxkBAAEH9FVj_21SrQVXrPqhaw0btrJ-VCzuCwACvwUAAj-VzAr5wuwdpEkoEy4E')
                 await message.answer('We are sorry for not finding hotels for your request. \n'
                                      'Please, start again.', reply_markup=get_kb_start())
@@ -248,26 +248,23 @@ async def photo_limit(message: types.Message, state: FSMContext):
                         media.attach_photo(photo=f'{photos[ i_photo].urls}')
                     try:
                         await message.answer_media_group(media=media, disable_notification=True)
-                    except Exception as exc:
-                        await message.answer('Something`s wrong')
-                        print(f'{exc}')
+                    except Exception :
+                        await message.answer('Something`s wrong. The bot can`t send you photos.')
                     count += 10
                     media = types.MediaGroup()
                 for i_photo in range(amount % 10):
                     media.attach_photo(photo=f'{photos[count + i_photo].urls}')
                 try:
                     await message.answer_media_group(media=media, disable_notification=True)
-                except Exception as exc:
-                    await message.answer('Something`s wrong')
-                    print(f'{exc}')
+                except Exception :
+                    await message.answer('Something`s wrong. The bot can`t send you photos.')
             else:
                 for i_photo in range(amount):
                     media.attach_photo(photo=f'{photos[i_photo].urls}')
                 try:
                     await message.answer_media_group(media=media, disable_notification=True)
-                except Exception as exc:
-                    await message.answer('Something`s wrong')
-                    print(f'{exc}')
+                except Exception :
+                    await message.answer('Something`s wrong. The bot can`t send you photos.')
         crud.update(model=AnswerMaker, hotel_id=data['hotel_id'], success=1)
         await take_next_hotel(user_id=message.from_user.id, message=message, state=state)
     else:
