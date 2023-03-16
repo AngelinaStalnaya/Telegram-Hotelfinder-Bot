@@ -20,11 +20,11 @@ async def start_command(message: types.Message):
                          f"Choose the command to start with!", reply_markup=get_kb_start())
 
 
-async def other_messages(message: types.Message):
+async def other_messages(message: types.Message):  # handler for all the rest messages
     await message.reply('It`s an ordinary message. Please, select a command to start with.', reply_markup=get_kb_start())
 
 
-def register_basic_commands(dp) -> None:
+def register_basic_commands(dp) -> None:  # function for registration of basic handlers
     dp.register_message_handler(help_command, commands=['help'], content_types=types.ContentType.TEXT)
     dp.register_message_handler(start_command, commands=['start'], content_types=types.ContentType.TEXT)
     dp.register_message_handler(other_messages, content_types=types.ContentType.TEXT)

@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
 
-class PriceStatesGroup(StatesGroup):
+class PriceStatesGroup(StatesGroup):  # FSMContext for user`s replies on commands
 
     sort = State()
     location = State()
@@ -13,7 +13,7 @@ class PriceStatesGroup(StatesGroup):
     result_size = State()
 
 
-class PhotoState(StatesGroup):
+class PhotoState(StatesGroup):  # FSMContext for user`s replies on photo need
 
     need_photo = State()
     photo_amount = State()

@@ -15,13 +15,13 @@ from tgbot_api.States import *
 from tgbot_api.keyboards.keyboards import *
 
 
-async def cb_cancel(message: types.Message, state: FSMContext) -> None:
+async def cb_cancel(message: types.Message, state: FSMContext) -> None:  # function for cancel of the command
     await state.finish()
     await message.answer('You`ve terminated the action of the command.',
                                             reply_markup=get_kb_start())
 
 
-async def create_history(state: FSMContext) -> None:
+async def create_history(state: FSMContext) -> None:   # function for recording user`s history
     async with state.proxy() as data:
         user_id = data['user_id']
     hotels, all_amount_hotels = crud.retrieve_hotels_for_db(model=AnswerMaker, user_id=user_id)
@@ -32,7 +32,7 @@ async def create_history(state: FSMContext) -> None:
     await state.finish()
 
 
-async def find_location(message: types.Message, state: FSMContext) -> None:
+async def find_location(message: types.Message, state: FSMContext) -> None:  # function for location check
     response = await site_api.get_location(message.text)
     await asyncio.sleep(0.1)
     if response:
@@ -46,7 +46,7 @@ async def find_location(message: types.Message, state: FSMContext) -> None:
                                                 'Please, try again.')
 
 
-async def check_in_calendar(callback_query: CallbackQuery, callback_data: CallbackData, state: FSMContext) -> None:
+async def check_in_calendar(callback_query: CallbackQuery, callback_data: CallbackData, state: FSMContext) -> None:  # function for check in date check
     selected, date = await SimpleCalendar().process_selection(query=callback_query, data=callback_data)
     if selected:
         await callback_query.message.answer(f'From: {date.strftime("%d/%m/%Y")}',
@@ -57,7 +57,7 @@ async def check_in_calendar(callback_query: CallbackQuery, callback_data: Callba
         await PriceStatesGroup.check_out.set()
 
 
-async def check_out_calendar(callback_query: CallbackQuery, callback_data: CallbackData, state: FSMContext) -> None:
+async def check_out_calendar(callback_query: CallbackQuery, callback_data: CallbackData, state: FSMContext) -> None:  # function for check out date check
     selected, date = await SimpleCalendar().process_selection(query=callback_query, data=callback_data)
     if selected:
         await callback_query.message.answer(f'To: {date.strftime("%d/%m/%Y")}',
@@ -91,7 +91,7 @@ async def check_out_calendar(callback_query: CallbackQuery, callback_data: Callb
                 await callback_query.message.answer('Enter max price limit for 1 night: ')
 
 
-async def max_price_limit(message: types.Message, state: FSMContext) -> None:
+async def max_price_limit(message: types.Message, state: FSMContext) -> None:  # function for max price limit input
     if message.text.isdigit():
         async with state.proxy() as data:
             data['cost_max'] = int(message.text)
@@ -101,7 +101,7 @@ async def max_price_limit(message: types.Message, state: FSMContext) -> None:
         await message.reply('It`s not a number. Please, try again.')
 
 
-async def min_price_limit(message: types.Message, state: FSMContext) -> None:
+async def min_price_limit(message: types.Message, state: FSMContext) -> None:  # function for min price limit input
     if message.text.isdigit():
         async with state.proxy() as data:
             data['cost_min'] = int(message.text)
@@ -111,7 +111,7 @@ async def min_price_limit(message: types.Message, state: FSMContext) -> None:
         await message.reply('It`s not a number. Please, try again.')
 
 
-async def distance_limit(message: types.Message, state: FSMContext) -> None:
+async def distance_limit(message: types.Message, state: FSMContext) -> None:  # function for distance input check
     if message.text.isdigit():
         async with state.proxy() as data:
             data['distance_max'] = int(message.text)
@@ -153,7 +153,7 @@ async def distance_limit(message: types.Message, state: FSMContext) -> None:
         await message.reply('It`s not a number. Please, try again.')
 
 
-async def result_limit(message: types.Message, state: FSMContext) -> None:
+async def result_limit(message: types.Message, state: FSMContext) -> None:  # function for result limit input
     if message.text.isdigit():
         async with state.proxy() as data:
             if int(message.text) > len(data['site_results']):
@@ -173,7 +173,7 @@ async def result_limit(message: types.Message, state: FSMContext) -> None:
         await message.reply('It`s not a number. Please, try again.')
 
 
-async def take_next_hotel(user_id: int, message: types.Message, state: FSMContext) -> None:
+async def take_next_hotel(user_id: int, message: types.Message, state: FSMContext) -> None:  # function for retrieving hotel`s info from db
     hotel = crud.retrieve_hotel(model=AnswerMaker, user_id=user_id)
     if hotel:
         await check_hotel_in_db(hotel=hotel[0], message=message)
@@ -183,7 +183,7 @@ async def take_next_hotel(user_id: int, message: types.Message, state: FSMContex
         await create_history(state=state)
 
 
-async def check_hotel_in_db(hotel, message: types.Message) -> None:
+async def check_hotel_in_db(hotel, message: types.Message) -> None:  # function for hotel`s info check in db / recording info in db
 
     check = crud.check_hotel(model=Hotels, hotel_id=hotel.hotel_id)
     if check:
@@ -199,7 +199,7 @@ async def check_hotel_in_db(hotel, message: types.Message) -> None:
         await send_hotels(message=message, data=to_send_user, hotel_data=hotel)
 
 
-async def send_hotels(message: types.Message, data, hotel_data) -> None:
+async def send_hotels(message: types.Message, data, hotel_data) -> None:  # function for sending message with hotel`s info to the user
     await message.answer(f"{data.hotel_name} \n "
                                             f"Situated at: {data.address} \n"
                                             f"which is {data.distance} km from the centre. \n"
@@ -212,7 +212,7 @@ async def send_hotels(message: types.Message, data, hotel_data) -> None:
     await PhotoState.need_photo.set()
 
 
-async def load_photo(callback: types.CallbackQuery, state: FSMContext) -> None:
+async def load_photo(callback: types.CallbackQuery, state: FSMContext) -> None:  # function for photo necessity  check
     await callback.message.edit_reply_markup()
     async with state.proxy() as data:
         if callback.data.startswith('Yes'):
@@ -226,7 +226,7 @@ async def load_photo(callback: types.CallbackQuery, state: FSMContext) -> None:
             await take_next_hotel(user_id=callback.message.from_user.id, message=callback.message, state=state)
 
 
-async def photo_limit(message: types.Message, state: FSMContext):
+async def photo_limit(message: types.Message, state: FSMContext):  # function for hotel`s photo sending
     if message.text.isdigit():
         async with state.proxy() as data:
             all_amount = crud.check_hotel(model=Hotels, hotel_id=data['hotel_id'])[0].all_photo
@@ -271,7 +271,7 @@ async def photo_limit(message: types.Message, state: FSMContext):
         await message.reply('It`s not a number. Please, try again.')
 
 
-def register_support_functions(dp):
+def register_support_functions(dp):  # function for registration of support functions/handlers
 
     dp.register_message_handler(cb_cancel, commands=['cancel'], state='*')
     dp.register_message_handler(find_location, state=PriceStatesGroup.location)

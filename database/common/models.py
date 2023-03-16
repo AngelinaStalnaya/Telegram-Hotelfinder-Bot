@@ -18,7 +18,7 @@ class BaseModel(peewee.Model):  # base model creation (establishes the DB connec
         table_function = make_table_name
 
 
-class PriceSort(BaseModel):  # creation of db-table for structuring data for site_api requests
+class PriceSort(BaseModel):  # creation of db-table for structuring data for site_api requests (highprice, lowprice)
 
     id = peewee.AutoField()
     user_id = peewee.IntegerField()
@@ -33,7 +33,7 @@ class PriceSort(BaseModel):  # creation of db-table for structuring data for sit
     results = peewee.IntegerField(default=0)
 
 
-class BestPrice(PriceSort):
+class BestPrice(PriceSort):  # creation of db-table for structuring data for site_api requests (bestdeal)
 
     cost_max = peewee.IntegerField()
     cost_min = peewee.IntegerField()
@@ -50,7 +50,7 @@ class RecordHistory(BaseModel):  # creation of db-table for user's records histo
     list_of_hotels = peewee.TextField()
 
 
-class Photo(BaseModel):
+class Photo(BaseModel):  # creation of db-table for hotel`s photos storage
     id = peewee.AutoField()
     hotel_address = peewee.TextField()
     hotel_name = peewee.TextField()
@@ -58,7 +58,7 @@ class Photo(BaseModel):
     urls = peewee.TextField()
 
 
-class AnswerMaker(BaseModel):
+class AnswerMaker(BaseModel):  # creation of temporary db-table for answers to users
 
     id = peewee.AutoField()
     command = peewee.TextField()
@@ -74,7 +74,7 @@ class AnswerMaker(BaseModel):
     location_name = peewee.TextField()
 
 
-class Hotels(BaseModel):
+class Hotels(BaseModel):   # creation of db-table for hotel`s info storage
     id = peewee.AutoField()
     hotel_id = peewee.IntegerField()
     hotel_name = peewee.TextField()

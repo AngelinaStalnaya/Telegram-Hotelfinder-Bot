@@ -57,7 +57,7 @@ async def history_command(message: types.Message):
         await message.answer('Your history`s empty yet.')
 
 
-def register_custom_commands(dp) -> None:
+def register_custom_commands(dp) -> None:  # function for registration of custom handlers
     dp.register_message_handler(lowprice_command, commands=['lowprice'], state=None)
     dp.register_message_handler(highprice_command, commands=['highprice'], state=None)
     dp.register_message_handler(bestdeal_command, commands=['bestdeal'], state=None)
