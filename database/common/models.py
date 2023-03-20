@@ -1,7 +1,11 @@
 from datetime import datetime
+
 import peewee
 
-test_database = peewee.SqliteDatabase('final_testings.db', autoconnect=True)  # creation of an instance of db, connection to the SQLite db
+from settings import start_db
+
+
+database = peewee.SqliteDatabase(database=start_db, autoconnect=True)  # creation of an instance of db, connection to the SQLite db
 
 
 def make_table_name(model_class):  # function to proper naming of functions as "name_tbl"

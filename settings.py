@@ -15,5 +15,10 @@ class TGBotSettings(BaseSettings):  # class for sensitive bot data defence
     bot_token: SecretStr = os.getenv('BOT_TOKEN', None)
 
 
+class DBSettings(BaseSettings):  # class for db sensitive data defence
+    db_name: StrictStr = os.getenv('DB_NAME', None)
+
+
 start_bot = TGBotSettings()
 start_site_settings = SiteSettings()
+start_db = DBSettings()

@@ -11,6 +11,7 @@ from database.common.models import Photo
 from database.core import crud
 from settings import SiteSettings
 
+
 site = SiteSettings()
 
 headers: Dict = {

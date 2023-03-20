@@ -12,9 +12,9 @@ The minimum requirement for this bot is that your virtual machine supports Pytho
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all the dependencies in your project.
  
 1. _Before_ exploring the bot\`s features _create a new project_ in your interpreter and _add a virtual environment_  in it. F.e.: <br>
- ![](../../Ангелина/Desktop/photo for readme/1.png)
+ ![](./img/1.png)
 2. _Make a clone_ of the git repository with the Hotel finder telegram bot project  in your new project. <br>
-![](../../Ангелина/Desktop/photo for readme/clone.png) <br>
+![](./img/2.png) <br>
 
 Please make sure the release file is unpacked, so you shall see the following files and directories:
 
@@ -33,26 +33,29 @@ settings.py              basic settings
 5. Open your telegram account, find the 'BotFather' bot in a search bar, start it. Follow the instructions of the BotFather to _create your new bot_.<br>
 We recommend you to add a description, commands to the menu and other stuff to your bot after all other preparing.
 6. After receiving a  _unique token, copy it_, then _move to the file '.env'_ in your project. <br>
-![](../../Ангелина/Desktop/photo for readme/telega bot your token.png)<br>
+![](./img/3.png)<br>
 Add the line in the file as follows: <br>
 `BOT_TOKEN='<your token here>'` <br>
 7. _Move to [rapidapi.com](https://rapidapi.com/)_ in a browser, create an account or sign in if you have one already. 
 In category 'Travel' _choose 'Hotels' API_, select a suitable subscription in page 'Pricing'. <br>
-![](../../Ангелина/Desktop/photo for readme/api sit e.png)
+![](./img/4.png)
 8. Move to page 'Endpoints', choose any endpoint to test. In section 'Code Snippets' _copy the value of 'X-RapidApi-Key'_. <br>
-![](../../Ангелина/Desktop/photo for readme/apikey.png)
+![](./img/5.png)
 
 In file '.env' in your project _add a line_ as follows:
 
 `SITE_API='<your X-RapidApi-Key here>'`
 9. Move back to the section 'Code Snippets' and _copy the value of 'X-RapidAPI-Host'_. <br>
-![](../../Ангелина/Desktop/photo for readme/apihost.png)
+![](./img/6.png)
 
 in file '.env' in your project _add the next line_:
 
 `HOST_API='<your host here>'`
 
 > Save the result and pay attention to the statistics on site API calls. Create a new account on [rapidapi.com](https://rapidapi.com/) if needed.
+
+10. For database proper naming in file '.env' in your project _add line_ as follows: <br>
+`DB_NAME=<name of the database>.db`
 
 
 ##Usage
@@ -64,7 +67,7 @@ The Hotel finder telegram bot comes with the following command in  a command lin
 python main.py
 ```
 Then move to your telegram bot to test bot\`s commands (/start, /history and else.) <br>
-![](../../Ангелина/Desktop/photo for readme/telega bot your bot.png)
+![](./img/7.png)
 
 Currently, the Hotel finder telegram bot project supports execution of the next custom commands:
 * history - for showing 10 last research request of the user;
