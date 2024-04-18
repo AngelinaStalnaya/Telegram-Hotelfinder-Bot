@@ -1,11 +1,9 @@
-#Python basic diploma
-
 ### <center>_Hotel finder telegram bot_
 
 ___
 Hotel finder telegram bot is a bot written on Python using aiogram library for dealing with telegram API.
 
-##Installation 
+## Installation 
 ___
 The minimum requirement for this bot is that your virtual machine supports Python 3.7 or above.
 
@@ -58,7 +56,7 @@ in file '.env' in your project _add the next line_:
 `DB_NAME=<name of the database>.db`
 
 
-##Usage
+## Usage
 ___
 > Activate your virtual environment if needed.
 
